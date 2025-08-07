@@ -85,14 +85,13 @@ class Neo4jTool:
                 ),
             ).merge(container_config)
 
-            self._container_context = container(self.image, config=self.container_config)
-
     async def __aenter__(self) -> "te.Self":
         """
         Enters the context, starting a container or connecting to a URI.
         """
         if self.mode == "container":
             logger.info("Starting Neo4j container ...")
+            self._container_context = container(self.image, config=self.container_config)
             ctx = await self._container_context.__aenter__()
             self.uri = f"bolt://localhost:{ctx.ports[7687]}"
             logger.success(f"Neo4j container started '{ctx.name}'")
