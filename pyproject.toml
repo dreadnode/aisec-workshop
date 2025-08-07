@@ -1,0 +1,73 @@
+[project]
+name = "bbot-agent"
+version = "0.1.0"
+description = "Discovery-oriented LLM agent for BBOT reconnaissance data analysis"
+readme = "README.md"
+authors = [{ name = "Dreadnode", email = "support@dreadnode.io" }]
+requires-python = ">=3.10"
+dependencies = [
+    "aiodocker>=0.24.0",
+    "cyclopts>=3.22.3",
+    "dreadnode>=1.13.4",
+    "neo4j>=5.28.1",
+    "pillow>=11.3.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipywidgets>=8.1.7",
+    "mypy>=1.17.0",
+    "pyright>=1.1.403",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "ruff>=0.12.5",
+]
+
+# Entrypoints
+
+[project.scripts]
+bbot-agent = "bbot_agent:app"
+
+# Build System
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Testing
+
+[tool.pytest.ini_options]
+asyncio_mode = "strict"
+asyncio_default_fixture_loop_scope = "function"
+
+# Typing
+
+[tool.mypy]
+strict = true
+python_version = "3.10"
+
+# Linting
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+isort = { combine-as-imports = true }
+format = { skip-magic-trailing-comma = true }
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "E501",    # line too long (we make best effort)
+    "TRY003",  # long messages in exception classes
+    "EM",      # picky message construction for exceptions
+    "C90",     # mccabe complexity
+    "A002",    # shadowing built-in
+    "D",       # docstrings
+    "ANN",     # annotations (handled by mypy)
+    "PLR0913", # too many arguments
+    "ERA001",  # commented out code
+    "FIX002",  # contains todo, consider fixing
+    "COM812",  # disabled for formatting
+    "ISC001",  # disabled for formatting
+]
+pydocstyle = { convention = "google" }
